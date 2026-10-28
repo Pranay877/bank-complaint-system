@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<!-- frontend/complaint.html : two modes in one page
+       complaint.html?new=1                -> register a new complaint (customers)
+       complaint.html?id=CMP-2026-0001     -> track one complaint (customers and employees)
+     js/app.js shows the right section and keeps the other one hidden. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Complaint | Banking &amp; UPI Complaint Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="complaint">
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="dashboard.html">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="#ffffff" fill-opacity=".14"/>
+          <path d="M16 6 6 11v2h20v-2L16 6Zm-8 9v7h3v-7H8Zm6.5 0v7h3v-7h-3ZM21 15v7h3v-7h-3ZM6 24v2h20v-2H6Z" fill="#fff"/>
+        </svg>
+        <span>Banking &amp; UPI Complaint Portal</span>
+      </a>
+      <nav class="header-nav">
+        <div class="header-user">
+          <span class="name" id="navUserName"></span>
+          <span class="role" id="navUserRole"></span>
+        </div>
+        <button type="button" id="logoutBtn" class="btn btn-ghost-light btn-sm">Log out</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hidden until app.js has confirmed the user is logged in -->
+  <main class="container page" id="appMain" hidden>
+
+    <a class="back-link" href="dashboard.html">Back to dashboard</a>
+
+    <div id="alertBox"></div>
+
+    <div class="loading" id="loadingBox" hidden>
+      <span class="spinner" aria-hidden="true"></span><span>Loading complaint...</span>
+    </div>
+
+
+    <!-- ============ MODE 1: register a new complaint (customers) ============ -->
+    <section id="newView" hidden>
+
+      <div class="panel form-card" id="newFormCard">
+        <div class="panel-head"><h1 style="font-size:1.4rem;margin:0">Register a complaint</h1></div>
+        <div class="panel-body">
+          <form id="complaintForm" novalidate>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                  <option value="">Select a category</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" list="subjectSuggestions" maxlength="150" required>
+                <datalist id="subjectSuggestions"></datalist>
+                <p class="hint">A short title. For UPI, pick a suggestion or write your own.</p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="description">Description</label>
+              <textarea id="description" name="description" maxlength="2000" required></textarea>
+              <p class="hint">Say what happened and when. At least 10 characters.</p>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="transactionId">Transaction ID </label>
+                <input type="text" id="transactionId" name="transaction_id" maxlength="50">
+              </div>
+              <div class="field">
+                <label for="transactionAmount">Transaction amount in &#8377; </label>
+                <input type="number" id="transactionAmount" name="transaction_amount" min="0" step="0.01" inputmode="decimal">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="transactionDate">Transaction date </label>
+                <input type="date" id="transactionDate" name="transaction_date">
+              </div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-primary">Submit complaint</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Shown instead of the form after a successful submit -->
+      <div class="panel success-panel" id="successPanel" hidden>
+        <div class="panel-body">
+          <div class="alert alert-success" role="status">Complaint Registered Successfully</div>
+          <p>Keep this complaint ID. You can use it to find your complaint later.</p>
+          <div class="ticket">
+            <div class="ticket-id" id="newComplaintId"></div>
+          </div>
+          <div class="success-actions">
+            <a class="btn btn-primary" id="trackLink" href="dashboard.html">Track this complaint</a>
+            <a class="btn btn-outline" href="dashboard.html">Back to dashboard</a>
+            <a class="btn btn-outline" href="complaint.html?new=1">Register another</a>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- ============ MODE 2: track one complaint ============ -->
+    <section id="trackView" hidden>
+
+      <div class="ticket">
+        <div class="ticket-top">
+          <div class="ticket-id" id="trackId"></div>
+          <div id="trackStatus"></div>
+        </div>
+        <p class="ticket-subject" id="trackSubject"></p>
+        <p class="ticket-category" id="trackCategory"></p>
+      </div>
+
+      <div class="track-grid">
+
+        <div class="stack">
+          <section class="panel">
+            <div class="panel-head"><h2>Complaint details</h2></div>
+            <div class="panel-body">
+              <dl class="detail-list" id="detailList"></dl>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><h2>Updates and remarks</h2><span class="muted small">Newest first</span></div>
+            <div class="panel-body">
+              <ul class="history" id="historyList"></ul>
+            </div>
+          </section>
+        </div>
+
+        <div class="stack">
+          <!-- Employees only: app.js un-hides this -->
+          <section class="panel" id="employeePanel" hidden>
+            <div class="panel-head"><h2>Update this complaint</h2></div>
+            <div class="panel-body">
+              <form id="updateForm" novalidate>
+                <div class="field">
+                  <label for="statusSelect">Status</label>
+                  <select id="statusSelect" name="status">
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                    <option value="Closed">Closed</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="remark">Remark <span class="optional">(the customer can read this)</span></label>
+                  <textarea id="remark" name="remark" maxlength="1000"></textarea>
+                </div>
+                <button type="submit" id="updateBtn" class="btn btn-primary btn-block">Update complaint</button>
+              </form>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><h2>Progress</h2></div>
+            <div class="panel-body">
+              <ol class="timeline" id="timeline"></ol>
+            </div>
+          </section>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

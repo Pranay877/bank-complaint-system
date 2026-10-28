@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!-- frontend/dashboard.html : ONE dashboard page for both roles.
+     js/app.js asks the backend who is logged in and shows the customer view
+     or the employee view. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard | Banking &amp; UPI Complaint Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="dashboard">
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="dashboard.html">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="#ffffff" fill-opacity=".14"/>
+          <path d="M16 6 6 11v2h20v-2L16 6Zm-8 9v7h3v-7H8Zm6.5 0v7h3v-7h-3ZM21 15v7h3v-7h-3ZM6 24v2h20v-2H6Z" fill="#fff"/>
+        </svg>
+        <span>Banking &amp; UPI Complaint Portal</span>
+      </a>
+      <nav class="header-nav">
+        <div class="header-user">
+          <span class="name" id="navUserName"></span>
+          <span class="role" id="navUserRole"></span>
+        </div>
+        <button type="button" id="logoutBtn" class="btn btn-ghost-light btn-sm">Log out</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hidden until app.js has confirmed the user is logged in -->
+  <main class="container page" id="appMain" hidden>
+
+    <div class="page-head">
+      <div>
+        <h1 id="welcomeTitle">Welcome</h1>
+        <p class="muted" id="welcomeSub"></p>
+      </div>
+      <a id="newComplaintBtn" class="btn btn-primary" href="complaint.html?new=1" hidden>Register new complaint</a>
+    </div>
+
+    <div id="alertBox"></div>
+
+    <section class="stats" aria-label="Complaint totals">
+      <div class="stat-card">
+        <div class="label">Total complaints</div>
+        <div class="value" id="statTotal">-</div>
+      </div>
+      <div class="stat-card stat-pending">
+        <div class="label">Pending</div>
+        <div class="value" id="statPending">-</div>
+      </div>
+      <div class="stat-card stat-progress">
+        <div class="label">In Progress</div>
+        <div class="value" id="statInProgress">-</div>
+      </div>
+      <div class="stat-card stat-resolved">
+        <div class="label">Resolved</div>
+        <div class="value" id="statResolved">-</div>
+      </div>
+      <div class="stat-card stat-closed">
+        <div class="label">Closed</div>
+        <div class="value" id="statClosed">-</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2 id="listTitle">Complaints</h2>
+        <div class="filter-tabs" id="filterTabs" role="group" aria-label="Filter complaints by status">
+          <button type="button" class="tab is-active" data-status="" aria-pressed="true">All</button>
+          <button type="button" class="tab" data-status="Pending" aria-pressed="false">Pending</button>
+          <button type="button" class="tab" data-status="In Progress" aria-pressed="false">In Progress</button>
+          <button type="button" class="tab" data-status="Resolved" aria-pressed="false">Resolved</button>
+          <button type="button" class="tab" data-status="Closed" aria-pressed="false">Closed</button>
+        </div>
+      </div>
+      <div id="listArea">
+        <div class="loading"><span class="spinner" aria-hidden="true"></span><span>Loading complaints...</span></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

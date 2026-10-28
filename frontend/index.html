@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!-- frontend/index.html : the home (landing) page -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Banking &amp; UPI Complaint Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="index">
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="#ffffff" fill-opacity=".14"/>
+          <path d="M16 6 6 11v2h20v-2L16 6Zm-8 9v7h3v-7H8Zm6.5 0v7h3v-7h-3ZM21 15v7h3v-7h-3ZM6 24v2h20v-2H6Z" fill="#fff"/>
+        </svg>
+        <span>Banking &amp; UPI Complaint Portal</span>
+      </a>
+      <nav class="header-nav">
+        <a id="navLogin" class="btn btn-ghost-light btn-sm" href="login.html">Log in</a>
+        <a id="navRegister" class="btn btn-light btn-sm" href="register.html">Create account</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div>
+          <h1>Report a banking or UPI problem and follow it until it is fixed.</h1>
+          <p class="lead">Register your complaint, get a reference number, and see every update from the bank in one place.</p>
+          <div class="hero-actions">
+            <a id="heroPrimary" class="btn btn-light" href="register.html">Create a customer account</a>
+            <a id="heroSecondary" class="btn btn-ghost-light" href="login.html">Log in</a>
+          </div>
+        </div>
+
+        <div class="flow-card">
+          <h2>What happens after you submit</h2>
+          <ul class="timeline">
+            <li class="done">
+              <span class="tl-marker" aria-hidden="true">&#10003;</span>
+              <span class="tl-label">Pending</span>
+              <span class="tl-note">Your complaint is saved and gets a reference number.</span>
+            </li>
+            <li class="done">
+              <span class="tl-marker" aria-hidden="true">&#10003;</span>
+              <span class="tl-label">In Progress</span>
+              <span class="tl-note">A bank employee is looking into it.</span>
+            </li>
+            <li class="done">
+              <span class="tl-marker" aria-hidden="true">&#10003;</span>
+              <span class="tl-label">Resolved</span>
+              <span class="tl-note">The bank has fixed the issue or shared the outcome.</span>
+            </li>
+            <li class="done">
+              <span class="tl-marker" aria-hidden="true">&#10003;</span>
+              <span class="tl-label">Closed</span>
+              <span class="tl-note">The complaint is finished.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="categories">
+      <div class="container">
+        <h2>What you can report</h2>
+        <p class="muted">Choose the category that fits best when you register a complaint.</p>
+        <ul class="chip-list">
+          <li>UPI</li>
+          <li>ATM</li>
+          <li>Debit Card</li>
+          <li>Credit Card</li>
+          <li>Net Banking</li>
+          <li>Bank Account</li>
+          <li>Other</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">College project for learning. It is not connected to any real bank or UPI system, so do not enter real banking details.</div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
